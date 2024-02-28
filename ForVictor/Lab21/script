@@ -1,0 +1,18 @@
+echo "Please enter the nuznaya dir"
+
+read directory
+
+echo "Please enter the nyzniy size"
+
+read size
+
+for file in "$directory"*
+
+do
+blocksize=$(stat -f %b "$file")
+if [ $blocksize -ge $size ]
+then
+rm "$file"
+fi
+done
+
