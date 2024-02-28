@@ -1,0 +1,28 @@
+#!/bin/bash
+
+#This is a test for string compare
+
+user="Twix_Xleb"
+
+if [ $user = $USER ]
+then
+echo "$user is the curent logged-in user"
+
+else
+echo "$user is not the curent logged-in user"
+fi
+
+text1="test"
+text2="super test"
+
+if [ $text1 \> "$text2" ]
+then
+echo "String $text1 greater than string $text2"
+
+elif [ $text1 \< "$text2" ]
+then
+echo "String $text1 shorter than string $text2" 
+
+else
+echo "String $text1 is equal to string $text2"
+fi
