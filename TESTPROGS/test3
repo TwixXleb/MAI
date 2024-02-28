@@ -1,0 +1,16 @@
+#!/bin/bash
+
+#This is a test for variables
+
+echo "Home dirrectory for curent user is: $HOME"
+
+#If u wanna use a $ sing in echo, u should use a \
+
+echo "I have a 300\$ in my ass"
+
+#U can use your own variables
+
+money=300
+person="Slave"
+
+echo "$person has $money bucks in his asshole"

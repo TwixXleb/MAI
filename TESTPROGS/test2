@@ -1,0 +1,9 @@
+#!/bin/bash
+
+#Test prog with some comments and descripsions of output
+
+echo "The curent dirrectory is:"
+pwd
+
+echo "The curent user is:"
+whoami
