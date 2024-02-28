@@ -1,0 +1,9 @@
+#!/bin/bash
+
+#This is a test for maths operations
+
+var1=$(( 150 + 150 ))
+echo $var1
+
+var2=$(( $var1 - 150 ))
+echo $var2

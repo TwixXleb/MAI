@@ -1,0 +1,14 @@
+#!/bin/bash
+
+#This is a test programm for if-then-else
+
+user="Twix_Xleb"
+
+if grep -Ril $user /etc/passwd
+then
+echo "User $user exists"
+
+elif ls /Home
+then
+echo "User $user doesn't exist, but here all users that have been found on the pc"
+fi

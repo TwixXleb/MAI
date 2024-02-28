@@ -1,0 +1,18 @@
+#!/bin/bash
+
+#This is a test file for compare
+
+val1=5
+val2=10
+
+if [ $val1 -gt $val2 ]
+then
+echo "$val1 greater than $val2"
+
+elif [ $val1 -lt $val2 ]
+then
+echo "$val1 lower than $val2"
+
+else
+echo "$val1 equal to $val2"
+fi

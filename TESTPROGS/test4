@@ -1,0 +1,7 @@
+#!/bin/bash
+
+#This is a test for in-out varriables
+
+mydir=$(pwd)
+
+echo $mydir
