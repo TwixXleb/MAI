@@ -1,95 +1,98 @@
-// deque.c
-
-#include <stdio.h>
-#include <stdlib.h>
 #include "deque.h"
+#include <stdio.h>
 
-Deque* create_deque(int capacity) {
-    Deque *deque = (Deque*)malloc(sizeof(Deque));
-    deque->data = (int*)malloc(capacity * sizeof(int));
-    deque->front = -1;
-    deque->rear = -1;
-    deque->capacity = capacity;
-    return deque;
+void deque_init(Deque *dq) {
+    dq->front = 0;
+    dq->rear = -1;
+    dq->size = 0;
 }
 
-int is_empty(Deque *deque) {
-    return (deque->front == -1);
+bool deque_is_empty(const Deque *dq) {
+    return dq->size == 0;
 }
 
-void add_front(Deque *deque, int item) {
-    if (deque->front == 0 && deque->rear == deque->capacity - 1) {
-        printf("Deque is full\n");
+bool deque_is_full(const Deque *dq) {
+    return dq->size == DEQUE_MAX_SIZE;
+}
+
+int deque_size(const Deque *dq) {
+    return dq->size;
+}
+
+bool deque_push_front(Deque *dq, ElementType elem) {
+    if (deque_is_full(dq)) {
+        return false;
+    }
+    dq->front = (dq->front - 1 + DEQUE_MAX_SIZE) % DEQUE_MAX_SIZE;
+    dq->data[dq->front] = elem;
+    dq->size++;
+    if (dq->rear == -1) {
+        dq->rear = dq->front;
+    }
+    return true;
+}
+
+bool deque_push_back(Deque *dq, ElementType elem) {
+    if (deque_is_full(dq)) {
+        return false;
+    }
+    dq->rear = (dq->rear + 1) % DEQUE_MAX_SIZE;
+    dq->data[dq->rear] = elem;
+    dq->size++;
+    if (dq->front == -1) {
+        dq->front = dq->rear;
+    }
+    return true;
+}
+
+bool deque_pop_front(Deque *dq, ElementType *elem) {
+    if (deque_is_empty(dq)) {
+        return false;
+    }
+    *elem = dq->data[dq->front];
+    if (dq->size == 1) {
+        dq->front = 0;
+        dq->rear = -1;
+    } else {
+        dq->front = (dq->front + 1) % DEQUE_MAX_SIZE;
+    }
+    dq->size--;
+    return true;
+}
+
+bool deque_pop_back(Deque *dq, ElementType *elem) {
+    if (deque_is_empty(dq)) {
+        return false;
+    }
+    *elem = dq->data[dq->rear];
+    if (dq->size == 1) {
+        dq->front = 0;
+        dq->rear = -1;
+    } else {
+        dq->rear = (dq->rear - 1 + DEQUE_MAX_SIZE) % DEQUE_MAX_SIZE;
+    }
+    dq->size--;
+    return true;
+}
+
+bool deque_get(const Deque *dq, int index, ElementType *elem) {
+    if (index < 0 || index >= dq->size) {
+        return false;
+    }
+    int actual_index = (dq->front + index) % DEQUE_MAX_SIZE;
+    *elem = dq->data[actual_index];
+    return true;
+}
+
+void deque_print(const Deque *dq) {
+    if (deque_is_empty(dq)) {
+        printf("Deque is empty.\n");
         return;
     }
-    if (deque->front == -1) {
-        deque->front = deque->rear = 0;
-    } else if (deque->front == 0) {
-        deque->front = deque->capacity - 1;
-    } else {
-        deque->front = deque->front - 1;
+    printf("Deque: ");
+    for (int i = 0; i < dq->size; i++) {
+        int idx = (dq->front + i) % DEQUE_MAX_SIZE;
+        printf("%d ", dq->data[idx]);
     }
-    deque->data[deque->front] = item;
-}
-
-void add_rear(Deque *deque, int item) {
-    if (deque->front == 0 && deque->rear == deque->capacity - 1) {
-        printf("Deque is full\n");
-        return;
-    }
-    if (deque->front == -1) {
-        deque->front = deque->rear = 0;
-    } else if (deque->rear == deque->capacity - 1) {
-        deque->rear = 0;
-    } else {
-        deque->rear = deque->rear + 1;
-    }
-    deque->data[deque->rear] = item;
-}
-
-int remove_front(Deque *deque) {
-    if (is_empty(deque)) {
-        printf("Deque is empty\n");
-        exit(EXIT_FAILURE);
-    }
-    int item = deque->data[deque->front];
-    if (deque->front == deque->rear) {
-        deque->front = deque->rear = -1;
-    } else if (deque->front == deque->capacity - 1) {
-        deque->front = 0;
-    } else {
-        deque->front = deque->front + 1;
-    }
-    return item;
-}
-
-int remove_rear(Deque *deque) {
-    if (is_empty(deque)) {
-        printf("Deque is empty\n");
-        exit(EXIT_FAILURE);
-    }
-    int item = deque->data[deque->rear];
-    if (deque->front == deque->rear) {
-        deque->front = deque->rear = -1;
-    } else if (deque->rear == 0) {
-        deque->rear = deque->capacity - 1;
-    } else {
-        deque->rear = deque->rear - 1;
-    }
-    return item;
-}
-
-int size(Deque *deque) {
-    if (is_empty(deque)) {
-        return 0;
-    }
-    if (deque->rear >= deque->front) {
-        return (deque->rear - deque->front + 1);
-    }
-    return (deque->capacity - deque->front + deque->rear + 1);
-}
-
-void free_deque(Deque *deque) {
-    free(deque->data);
-    free(deque);
+    printf("\n");
 }
